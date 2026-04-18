@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASU FinTech Program | Orientation 2026</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: '#050B14',
+                        cyber: '#00E5FF',
+                        neon: '#39FF14',
+                        purple: '#B026FF',
+                        surface: 'rgba(10, 20, 35, 0.7)',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    keyframes: {
+                        'fade-in-up': {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.5);
+            --glow-purple: 0 0 20px rgba(176, 38, 255, 0.5);
+        }
+
+        body {
+            background-color: #050B14;
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+
+        @media (pointer: fine) {
+            body {
+                cursor: none;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050B14;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00E5FF;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B026FF;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(13, 20, 35, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-hover:hover {
+            border-color: #00E5FF;
+            box-shadow: var(--glow-cyan);
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        /* Gradients & Text */
+        .text-gradient {
+            background: linear-gradient(to right, #00E5FF, #39FF14);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-purple {
+            background: linear-gradient(to right, #00E5FF, #B026FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            display: none;
+        }
+
+        @media (pointer: fine) {
+
+            .cursor-dot,
+            .cursor-outline {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                z-index: 9999;
+                pointer-events: none;
+            }
+
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background-color: #00E5FF;
+            }
+
+            .cursor-outline {
+                width: 40px;
+                height: 40px;
+                border: 1px solid rgba(0, 229, 255, 0.5);
+                transition: width 0.2s, height 0.2s, border-color 0.2s;
+            }
+        }
+
+        /* Particles container */
+        #tsparticles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #0F172A;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 50;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid #00E5FF;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+            font-size: 0.75rem;
+            font-weight: normal;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tab-active {
+            background: rgba(0, 229, 255, 0.1);
+            border-bottom: 2px solid #00E5FF;
+            color: #00E5FF;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-cyber selection:text-navy">
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber to-blue-600 flex items-center justify-center font-display font-bold text-navy text-xl shadow-[0_0_15px_rgba(0,229,255,0.5)]">
+                        N</div>
+                    <span class="font-display font-bold text-xl tracking-wider text-white">NASU <span
+                            class="text-cyber">FINTECH</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home"
+                            class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#structure"
+                            class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Program</a>
+                        <a href="#courses"
+                            class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Courses</a>
+                        <a href="#careers"
+                            class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Careers</a>
+                        <a href="#planner"
+                            class="hover:text-neon transition-colors px-3 py-2 rounded-md text-sm font-medium"><i
+                                class="fa-solid fa-compass mr-1"></i>Planner</a>
+                        <a href="https://nasu.edu.eg/apply" onclick="triggerConfetti()"
+                            class="inline-block bg-cyber/10 border border-cyber text-cyber hover:bg-cyber hover:text-navy hover:shadow-[0_0_15px_rgba(0,229,255,0.6)] px-5 py-2 rounded-full text-sm font-bold transition-all duration-300">Apply
+                            Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div id="tsparticles"></div>
+
+        <div
+            class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyber rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse">
+        </div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse"
+            style="animation-delay: 2s;"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 glass mb-8 animate-fade-in-up">
+                <span class="w-2 h-2 rounded-full bg-neon animate-pulse"></span>
+                <span class="text-sm font-medium tracking-wide text-gray-300">Faculty of Business • Fall 2026 Admissions
+                    Open</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-display font-bold text-white mb-6 leading-tight animate-fade-in-up"
+                style="animation-delay: 0.1s;">
+                Shape the Future of <br />
+                <span class="text-gradient">Finance at NASU</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-400 mb-8 font-light max-w-3xl mx-auto animate-fade-in-up"
+                style="animation-delay: 0.2s;">
+                Master the intersection of money and technology. <br class="hidden md:block" />
+                <span class="font-semibold text-cyber" id="typewriter"></span>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up"
+                style="animation-delay: 0.3s;">
+                <a href="#structure"
+                    class="px-8 py-4 bg-cyber text-navy font-bold rounded-full hover:bg-white transition-colors duration-300 shadow-[0_0_20px_rgba(0,229,255,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)]">
+                    Explore the Program <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+                <button onclick="document.getElementById('videoModal').classList.remove('hidden')"
+                    class="px-8 py-4 glass border border-white/20 text-white font-semibold rounded-full hover:bg-white/10 transition-colors duration-300 flex items-center gap-2">
+                    <i class="fa-solid fa-play text-cyber"></i> Watch 60-sec Video
+                </button>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+            <span class="text-xs text-gray-500 uppercase tracking-widest mb-2">Scroll to discover</span>
+            <i class="fa-solid fa-chevron-down text-cyber"></i>
+        </div>
+    </section>
+
+    <section class="py-20 bg-navy relative border-t border-white/5 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold mb-6 text-white">Engineering the <span
+                            class="text-gradient-purple">Next Economy</span></h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                        NASU’s FinTech program merges cutting-edge technology with rigorous finance principles. Designed
+                        for visionaries, our 4-year Bachelor’s program prepares you for the jobs of tomorrow by bridging
+                        the gap between Wall Street and Silicon Valley.
+                    </p>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-neon"></i> Hands-on
+                            trading labs & blockchain nodes</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-neon"></i> Taught by
+                            industry veterans & AI researchers</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-neon"></i>
+                            Experiential capstone projects with real startups</li>
+                    </ul>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="glass p-8 rounded-2xl text-center border-t-2 border-cyber">
+                        <div class="text-4xl font-display font-bold text-white mb-2"><span class="counter"
+                                data-target="4">0</span> Years</div>
+                        <div class="text-sm text-gray-400 uppercase tracking-wider">BSc Program</div>
+                    </div>
+                    <div class="glass p-8 rounded-2xl text-center border-t-2 border-purple">
+                        <div class="text-4xl font-display font-bold text-white mb-2"><span class="counter"
+                                data-target="22">0</span>+</div>
+                        <div class="text-sm text-gray-400 uppercase tracking-wider">Core Tech Courses</div>
+                    </div>
+                    <div class="glass p-8 rounded-2xl text-center border-t-2 border-neon">
+                        <div class="text-4xl font-display font-bold text-white mb-2"><span class="counter"
+                                data-target="10">0</span></div>
+                        <div class="text-sm text-gray-400 uppercase tracking-wider">Career Tracks</div>
+                    </div>
+                    <div class="glass p-8 rounded-2xl text-center border-t-2 border-blue-500">
+                        <div class="text-4xl font-display font-bold text-white mb-2"><span class="counter"
+                                data-target="100">0</span>%</div>
+                        <div class="text-sm text-gray-400 uppercase tracking-wider">Future Ready</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="structure" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-display font-bold text-white mb-4">Program <span
+                        class="text-gradient">Structure</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Explore your 4-year journey from foundational principles to
+                    advanced computational finance.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="switchYear('year1')" id="btn-year1"
+                    class="tab-btn tab-active px-6 py-3 rounded-full font-semibold transition-all">First Year</button>
+                <button onclick="switchYear('year2')" id="btn-year2"
+                    class="tab-btn text-gray-400 hover:text-white px-6 py-3 rounded-full font-semibold transition-all">Second
+                    Year</button>
+                <button onclick="switchYear('year3')" id="btn-year3"
+                    class="tab-btn text-gray-400 hover:text-white px-6 py-3 rounded-full font-semibold transition-all">Third
+                    Year</button>
+                <button onclick="switchYear('year4')" id="btn-year4"
+                    class="tab-btn text-gray-400 hover:text-white px-6 py-3 rounded-full font-semibold transition-all">Fourth
+                    Year</button>
+            </div>
+
+            <div class="glass rounded-2xl overflow-hidden shadow-2xl border border-white/10" id="structure-container">
+            </div>
+        </div>
+    </section>
+
+    <section id="courses" class="py-24 bg-[#0a0f1a] relative z-10 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-display font-bold text-white mb-4">Course <span
+                        class="text-gradient-purple">Repository</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Click on any course to view its details, prerequisites, and
+                    relevance to FinTech.</p>
+            </div>
+
+            <div class="flex justify-center gap-2 mb-8 border-b border-white/10 pb-4">
+                <button onclick="switchCourseTab('req')" id="tab-req"
+                    class="text-cyber border-b-2 border-cyber pb-2 px-4 font-semibold transition-all">Required
+                    Univ.</button>
+                <button onclick="switchCourseTab('elec')" id="tab-elec"
+                    class="text-gray-400 hover:text-white pb-2 px-4 font-semibold transition-all">Elective
+                    Univ.</button>
+                <button onclick="switchCourseTab('prog')" id="tab-prog"
+                    class="text-gray-400 hover:text-white pb-2 px-4 font-semibold transition-all">Program
+                    Electives</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courses-grid">
+            </div>
+        </div>
+    </section>
+
+    <section id="careers" class="py-24 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-cyber/5 to-transparent z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-display font-bold text-white mb-4">Key Career <span
+                        class="text-gradient">Outcomes</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Graduates of the NASU FinTech program are positioned for
+                    high-impact roles in top financial and tech institutions.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="careers-grid">
+            </div>
+        </div>
+    </section>
+
+    <section id="planner" class="py-24 bg-gradient-to-b from-navy to-[#0a0f1a] relative z-10 border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="glass p-10 rounded-3xl border border-cyber/30 shadow-[0_0_30px_rgba(0,229,255,0.1)] relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-6 opacity-10">
+                    <i class="fa-solid fa-microchip text-9xl text-cyber"></i>
+                </div>
+
+                <h2 class="text-3xl font-display font-bold text-white mb-4 relative z-10">Build Your <span
+                        class="text-neon">Path</span></h2>
+                <p class="text-gray-400 mb-8 relative z-10">Not sure which electives to choose? Take our quick
+                    AI-powered quiz to find your ideal FinTech specialization.</p>
+
+                <div id="quiz-container" class="relative z-10">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">What excites you the most?</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <button onclick="showQuizResult('data')"
+                                class="glass hover:bg-cyber/10 border border-white/10 hover:border-cyber p-4 rounded-xl transition-all">
+                                <i class="fa-solid fa-chart-pie text-2xl text-cyber mb-2"></i><br>Data & Analytics
+                            </button>
+                            <button onclick="showQuizResult('code')"
+                                class="glass hover:bg-neon/10 border border-white/10 hover:border-neon p-4 rounded-xl transition-all">
+                                <i class="fa-solid fa-code text-2xl text-neon mb-2"></i><br>Coding & Algorithms
+                            </button>
+                            <button onclick="showQuizResult('strat')"
+                                class="glass hover:bg-purple/10 border border-white/10 hover:border-purple p-4 rounded-xl transition-all">
+                                <i class="fa-solid fa-lightbulb text-2xl text-purple mb-2"></i><br>Strategy & Innovation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quiz-result"
+                    class="hidden relative z-10 mt-6 p-6 rounded-xl bg-white/5 border border-white/10 text-left">
+                    <h4 class="text-2xl font-bold text-white mb-2" id="res-title">Your Path: ...</h4>
+                    <p class="text-gray-300 mb-4" id="res-desc">...</p>
+                    <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
+                        <div>
+                            <h5 class="text-sm text-cyber uppercase tracking-wider mb-2">Recommended Electives</h5>
+                            <ul class="text-sm text-gray-400 space-y-1" id="res-elec"></ul>
+                        </div>
+                        <div>
+                            <h5 class="text-sm text-neon uppercase tracking-wider mb-2">Target Careers</h5>
+                            <ul class="text-sm text-gray-400 space-y-1" id="res-career"></ul>
+                        </div>
+                    </div>
+                    <button onclick="resetQuiz()" class="mt-6 text-sm text-gray-500 hover:text-white underline">Reset
+                        Quiz</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-display font-bold text-center text-white mb-12">Voices of <span
+                    class="text-gradient">NASU</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-8 rounded-2xl relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-cyber/20 absolute top-4 right-4"></i>
+                    <p class="text-gray-300 italic mb-6">"The integration of computational methods with corporate
+                        finance completely changed how I view markets. The algorithmic trading lab is world-class."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyber to-blue-900"></div>
+                        <div>
+                            <h4 class="text-white font-bold">Dr. Sarah El-Kady</h4>
+                            <p class="text-sm text-cyber">Professor of AI in Finance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass p-8 rounded-2xl relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-neon/20 absolute top-4 right-4"></i>
+                    <p class="text-gray-300 italic mb-6">"I secured a FinTech Analyst role before even graduating. The
+                        hands-on experiential project in my 4th year gave me the exact skills employers are looking
+                        for."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-neon to-green-900"></div>
+                        <div>
+                            <h4 class="text-white font-bold">Omar Tariq</h4>
+                            <p class="text-sm text-neon">Alumni, Class of '25</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass p-8 rounded-2xl relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-purple/20 absolute top-4 right-4"></i>
+                    <p class="text-gray-300 italic mb-6">"Blockchain isn't just a buzzword here. We built decentralized
+                        applications and studied their regulatory impacts. It’s a truly comprehensive curriculum."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple to-pink-900"></div>
+                        <div>
+                            <h4 class="text-white font-bold">Nadia Hassan</h4>
+                            <p class="text-sm text-purple">Senior Student</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-[#03060a] pt-20 pb-10">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <h2 class="text-4xl font-display font-bold text-white mb-6">Ready to join the <span
+                    class="text-gradient">FinTech revolution</span> at NASU?</h2>
+            <p class="text-gray-400 mb-10">Applications for the upcoming Fall semester are now open. Secure your place
+                in the future of finance.</p>
+            <a href="https://nasu.edu.eg/apply" onclick="triggerConfetti()"
+                class="inline-block px-10 py-5 bg-gradient-to-r from-cyber to-blue-600 text-navy text-lg font-bold rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_20px_rgba(0,229,255,0.3)]">
+                Start Your Application Now
+            </a>
+
+            <div class="mt-20 border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center gap-2 mb-4 md:mb-0">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-cyber flex items-center justify-center font-display font-bold text-navy text-sm">
+                        N</div>
+                    <span class="font-display font-bold text-lg text-white">NASU <span
+                            class="text-cyber">FINTECH</span></span>
+                </div>
+                <div class="text-gray-500 text-sm text-center">
+                    &copy; 2026 New Cairo City, Egypt. All rights reserved. <br>
+                    <span class="text-cyber">Made with <i class="fa-solid fa-heart"></i> for NASU Students</span>
+                </div>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <a href="#" aria-label="LinkedIn"
+                        class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-cyber transition-colors"><i
+                            class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Twitter"
+                        class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-cyber transition-colors"><i
+                            class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="videoModal"
+        class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300"
+        style="opacity: 1;">
+        <div
+            class="relative w-full max-w-4xl aspect-video bg-navy border border-white/20 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,229,255,0.2)]">
+            <button onclick="document.getElementById('videoModal').classList.add('hidden')"
+                class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 rounded-full text-white hover:text-cyber flex items-center justify-center"><i
+                    class="fa-solid fa-xmark"></i></button>
+            <div
+                class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-navy to-blue-900/50">
+                <i class="fa-solid fa-circle-play text-7xl text-cyber/80 mb-4 animate-pulse"></i>
+                <p class="text-white font-display text-xl">Promotional Video Player</p>
+                <p class="text-gray-400 text-sm">(Simulation Mode)</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="courseModal"
+        class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="relative w-full max-w-lg bg-[#0a0f1a] border border-cyber/50 rounded-2xl p-8 shadow-[0_0_30px_rgba(0,229,255,0.15)] transform transition-transform scale-95"
+            id="courseModalContent">
+            <button onclick="closeCourseModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i
+                    class="fa-solid fa-xmark text-xl"></i></button>
+            <div class="inline-block px-3 py-1 bg-cyber/10 border border-cyber text-cyber rounded-full text-xs font-bold mb-4"
+                id="cm-code">CODE101</div>
+            <h3 class="text-2xl font-display font-bold text-white mb-2" id="cm-title">Course Title</h3>
+            <p class="text-sm text-gray-400 mb-6">Prerequisite: <span class="text-neon" id="cm-prereq">None</span></p>
+            <div class="bg-white/5 rounded-lg p-4 border border-white/5">
+                <h4 class="text-sm font-semibold text-white mb-2">Why this matters in FinTech:</h4>
+                <p class="text-gray-300 text-sm" id="cm-desc">Generative description goes here.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Extraction exactly from screenshots
+        const structureData = {
+            year1: {
+                sem1: [
+                    { code: "ACC101", title: "Principles of Accounting I", prereq: "-" },
+                    { code: "MGT101", title: "Principles of Management", prereq: "-" },
+                    { code: "ECO101", title: "Microeconomics", prereq: "-" },
+                    { code: "STA101", title: "Mathematics", prereq: "-" },
+                    { code: "LNG101", title: "Business English I", prereq: "-" },
+                    { code: "ASU101", title: "Societal Issues*", prereq: "-" },
+                    { code: "", title: "University Elective**", prereq: "-" }
+                ],
+                sem2: [
+                    { code: "ACC102", title: "Principles of Accounting II", prereq: "ACC101" },
+                    { code: "STA201", title: "Mathematics of Finance", prereq: "STA101" },
+                    { code: "ECO102", title: "Macroeconomics", prereq: "ECO101" },
+                    { code: "LAW101", title: "Principles of Law", prereq: "-" },
+                    { code: "LNG102", title: "Business English II", prereq: "LNG101" },
+                    { code: "", title: "University Elective**", prereq: "-" },
+                    { code: "", title: "University Elective**", prereq: "-" }
+                ]
+            },
+            year2: {
+                sem1: [
+                    { code: "ACC201", title: "Intermediate Accounting I", prereq: "ACC102" },
+                    { code: "MKG201", title: "Principles of Marketing", prereq: "MGT101" },
+                    { code: "ECO201", title: "International Economics", prereq: "ECO102" },
+                    { code: "FIN201", title: "Financial Management", prereq: "MGT101" },
+                    { code: "STA202", title: "Statistics", prereq: "STA201" },
+                    { code: "", title: "Program Elective***", prereq: "" }
+                ],
+                sem2: [
+                    { code: "ACC202", title: "Intermediate Accounting II", prereq: "ACC201" },
+                    { code: "FIN202", title: "Corporate Finance", prereq: "FIN201" },
+                    { code: "ECO203", title: "Money and Banking", prereq: "ECO102" },
+                    { code: "TECH201", title: "Fintech Ethics, Regulation, and Cyber Risk Management", prereq: "FIN201" },
+                    { code: "STA203", title: "Operations Research", prereq: "STA202" },
+                    { code: "", title: "Program Elective***", prereq: "" }
+                ]
+            },
+            year3: {
+                sem1: [
+                    { code: "FIN301", title: "Financial Markets & Institutions Management", prereq: "FIN201" },
+                    { code: "ACC301", title: "Financial Accounting, Sustainability, & Impact Investing", prereq: "ACC202" },
+                    { code: "STA301", title: "Applied Statistics", prereq: "STA202" },
+                    { code: "TECH301", title: "Blockchain Technology and Applications in Finance", prereq: "-" },
+                    { code: "", title: "Program Elective***", prereq: "" },
+                    { code: "", title: "Program Elective***", prereq: "" }
+                ],
+                sem2: [
+                    { code: "FIN302", title: "Investment Analysis & Portfolio Management", prereq: "FIN201" },
+                    { code: "TECH302", title: "Data Science and Business Analytics for Fintech", prereq: "STA301" },
+                    { code: "FIN303", title: "Behavioral Finance", prereq: "FIN202" },
+                    { code: "FIN304", title: "Economic Feasibility Studies", prereq: "FIN201" },
+                    { code: "", title: "Program Elective***", prereq: "" },
+                    { code: "", title: "Program Elective***", prereq: "" }
+                ]
+            },
+            year4: {
+                sem1: [
+                    { code: "FIN401", title: "Corporate Valuation", prereq: "FIN302" },
+                    { code: "TECH401", title: "Financial Modeling and Econometrics", prereq: "TECH302, FIN202" },
+                    { code: "FIN402", title: "Bank Management", prereq: "FIN304" },
+                    { code: "FIN403", title: "Financial Risk Management", prereq: "FIN302" },
+                    { code: "", title: "Program Elective***", prereq: "" },
+                    { code: "", title: "Program Elective***", prereq: "" }
+                ],
+                sem2: [
+                    { code: "TECH402", title: "Machine Learning and AI in Finance", prereq: "TECH302" },
+                    { code: "TECH403", title: "Computational Methods in Finance", prereq: "TECH302, FIN302" },
+                    { code: "TECH404", title: "Algorithmic and Robo-Trading", prereq: "TECH302, FIN301" },
+                    { code: "TECH405", title: "Fintech Experiential Project", prereq: "TECH302, FIN304" },
+                    { code: "", title: "Program Elective***", prereq: "" },
+                    { code: "", title: "Program Elective***", prereq: "" }
+                ]
+            }
+        };
+
+        const electivesData = {
+            req: [
+                { code: "ASU101", title: "Societal Issues", prereq: "-" }
+            ],
+            elec: [
+                { code: "ASU201", title: "Employability Skills and Career Development", prereq: "-" },
+                { code: "ASU205", title: "Fundamentals of Scientific Research and Scientific Writing", prereq: "-" },
+                { code: "ASU301", title: "Critical Thinking and Problem Solving", prereq: "-" },
+                { code: "ASU401", title: "Information and Communication Technology (ICT)", prereq: "-" },
+                { code: "ASU402", title: "Artificial Intelligence Tools and Applications", prereq: "-" },
+                { code: "ASU403", title: "Fundamentals of Data Analysis: From Data to Decisions", prereq: "-" },
+                { code: "ASU501", title: "Egyptian Identity and Cultural Diversity", prereq: "-" }
+            ],
+            prog: [
+                { code: "TECH406", prereq: "TECH302", title: "Data Visualization for Fintech" },
+                { code: "TECH202", prereq: "FIN201", title: "Programming for Finance" },
+                { code: "TECH303", prereq: "FIN301", title: "Financial Data and Fintech" },
+                { code: "TECH203", prereq: "FIN201", title: "Artificial Intelligence in Finance" },
+                { code: "TECH304", prereq: "FIN301", title: "Natural Language Processing for Finance" },
+                { code: "TECH203", prereq: "-", title: "Fintech for Social Impact" },
+                { code: "TECH204", prereq: "-", title: "Fintech and Financial Innovation" },
+                { code: "FIN404", prereq: "FIN302", title: "Entrepreneurial Finance and Venture Capital" },
+                { code: "FIN203", prereq: "FIN201", title: "Corporate Governance and Control" },
+                { code: "STA204", prereq: "STA202", title: "Business Statistics" },
+                { code: "TECH407", prereq: "TECH302", title: "Empirical Methods in Finance" },
+                { code: "FIN405", prereq: "FIN302", title: "Emerging Financial Markets" },
+                { code: "FIN406", prereq: "FIN302", title: "International Financial Management" },
+                { code: "FIN305", prereq: "FIN301", title: "Valuation and Value Creation" },
+                { code: "FIN407", prereq: "FIN304", title: "Credit Analysis" },
+                { code: "FIN204", prereq: "FIN201", title: "Turnaround Management" },
+                { code: "FIN205", prereq: "FIN201", title: "Financial Markets and Banking in the Postcrisis Era" },
+                { code: "TECH408", prereq: "FIN302, TECH302", title: "Derivatives and Risk Analytics" },
+                { code: "MGT201", prereq: "MGT101", title: "Human Resources Management" },
+                { code: "MGT202", prereq: "MGT101", title: "Production Management" },
+                { code: "FIN206", prereq: "FIN201", title: "Islamic Banking Management" },
+                { code: "FIN207", prereq: "FIN201", title: "Fundamental and Technical Analysis" }
+            ]
+        };
+
+        const careersData = [
+            "FinTech Analyst", "Data Scientist in Finance", "Blockchain Developer", "Algorithmic Trader",
+            "Financial Software Developer", "Compliance Officer (FinTech focused)", "Product Manager (FinTech)",
+            "Investment Analyst (FinTech focused)", "Consultant (FinTech)", "Startup Roles"
+        ];
+
+        // Custom Cursor Logic
+        if (window.matchMedia('(pointer: fine)').matches) {
+            const dot = document.getElementById("cursor-dot");
+            const outline = document.getElementById("cursor-outline");
+            window.addEventListener("mousemove", function (e) {
+                dot.style.left = e.clientX + "px";
+                dot.style.top = e.clientY + "px";
+                outline.animate({ left: e.clientX + "px", top: e.clientY + "px" }, { duration: 500, fill: "forwards" });
+            });
+            document.querySelectorAll('a, button, .cursor-pointer, .glass-hover').forEach(el => {
+                el.addEventListener('mouseenter', () => { outline.style.width = '60px'; outline.style.height = '60px'; outline.style.borderColor = '#39FF14'; });
+                el.addEventListener('mouseleave', () => { outline.style.width = '40px'; outline.style.height = '40px'; outline.style.borderColor = 'rgba(0, 229, 255, 0.5)'; });
+            });
+        }
+
+        // Typewriter Effect
+        const words = ["Blockchain Technology.", "Artificial Intelligence.", "Data Science.", "Robo-Trading.", "Digital Banking."];
+        let i = 0; let j = 0; let isDeleting = false; let text = "";
+        function type() {
+            const currentWord = words[i];
+            if (isDeleting) { text = currentWord.substring(0, j - 1); j--; }
+            else { text = currentWord.substring(0, j + 1); j++; }
+            document.getElementById("typewriter").innerHTML = text + "<span class='animate-ping'>|</span>";
+            let speed = isDeleting ? 50 : 100;
+            if (!isDeleting && j === currentWord.length) { speed = 2000; isDeleting = true; }
+            else if (isDeleting && j === 0) { isDeleting = false; i = (i + 1) % words.length; speed = 500; }
+            setTimeout(type, speed);
+        }
+        type();
+
+        // Render Program Structure Table
+        function renderStructure(yearObj) {
+            let html = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+                    <div class="p-0">
+                        <div class="bg-white/5 p-4 text-center border-b border-white/10"><h3 class="text-xl font-bold text-cyber">First Semester</h3></div>
+                        <ul class="divide-y divide-white/5">
+            `;
+            yearObj.sem1.forEach(c => {
+                html += `
+                    <li class="p-4 hover:bg-white/5 transition-colors flex justify-between items-center group cursor-pointer" onclick="openCourseModal('${c.code}', '${c.title}', '${c.prereq}')">
+                        <div>
+                            <div class="text-sm font-bold text-gray-300 group-hover:text-cyber transition-colors">${c.code || '&nbsp;'}</div>
+                            <div class="text-white text-sm md:text-base">${c.title}</div>
+                        </div>
+                        ${c.prereq !== '-' && c.prereq !== '' ? `<div class="tooltip relative"><i class="fa-solid fa-link text-gray-500 group-hover:text-neon"></i><span class="tooltip-text">Prereq: ${c.prereq}</span></div>` : ''}
+                    </li>`;
+            });
+            html += `</ul></div><div class="p-0">
+                        <div class="bg-white/5 p-4 text-center border-b border-white/10"><h3 class="text-xl font-bold text-neon">Second Semester</h3></div>
+                        <ul class="divide-y divide-white/5">
+            `;
+            yearObj.sem2.forEach(c => {
+                html += `
+                    <li class="p-4 hover:bg-white/5 transition-colors flex justify-between items-center group cursor-pointer" onclick="openCourseModal('${c.code}', '${c.title}', '${c.prereq}')">
+                        <div>
+                            <div class="text-sm font-bold text-gray-300 group-hover:text-neon transition-colors">${c.code || '&nbsp;'}</div>
+                            <div class="text-white text-sm md:text-base">${c.title}</div>
+                        </div>
+                        ${c.prereq !== '-' && c.prereq !== '' ? `<div class="tooltip relative"><i class="fa-solid fa-link text-gray-500 group-hover:text-cyber"></i><span class="tooltip-text">Prereq: ${c.prereq}</span></div>` : ''}
+                    </li>`;
+            });
+            html += `</ul></div></div>`;
+            document.getElementById('structure-container').innerHTML = html;
+        }
+
+        function switchYear(year) {
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('tab-active', 'text-cyber');
+                b.classList.add('text-gray-400');
+            });
+            const btn = document.getElementById(`btn-${year}`);
+            btn.classList.add('tab-active');
+            btn.classList.remove('text-gray-400');
+
+            // Animate container
+            gsap.fromTo('#structure-container', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+            renderStructure(structureData[year]);
+        }
+
+        // Render Courses List
+        function renderCourses(type) {
+            const grid = document.getElementById('courses-grid');
+            grid.innerHTML = '';
+            electivesData[type].forEach((c, index) => {
+                grid.innerHTML += `
+                    <div class="glass glass-hover p-6 rounded-xl cursor-pointer" style="animation-delay: ${index * 0.05}s;" onclick="openCourseModal('${c.code}', '${c.title}', '${c.prereq}')">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-2 py-1 bg-white/10 rounded text-xs font-bold text-gray-300">${c.code || 'ELEC'}</span>
+                            ${c.prereq !== '-' ? `<span class="text-[10px] text-neon border border-neon/30 px-2 py-1 rounded-full"><i class="fa-solid fa-lock text-[8px]"></i> ${c.prereq}</span>` : ''}
+                        </div>
+                        <h4 class="text-white font-semibold leading-snug">${c.title}</h4>
+                    </div>
+                `;
+            });
+            gsap.fromTo(grid.children, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.05 });
+        }
+
+        function switchCourseTab(type) {
+            ['req', 'elec', 'prog'].forEach(t => {
+                const tab = document.getElementById(`tab-${t}`);
+                tab.classList.remove('text-cyber', 'border-b-2', 'border-cyber');
+                tab.classList.add('text-gray-400');
+            });
+            const activeTab = document.getElementById(`tab-${type}`);
+            activeTab.classList.add('text-cyber', 'border-b-2', 'border-cyber');
+            activeTab.classList.remove('text-gray-400');
+            renderCourses(type);
+        }
+
+        // Render Careers
+        function initCareers() {
+            const grid = document.getElementById('careers-grid');
+            const icons = ['fa-chart-line', 'fa-database', 'fa-cubes', 'fa-robot', 'fa-code', 'fa-shield-halved', 'fa-box-open', 'fa-magnifying-glass-chart', 'fa-user-tie', 'fa-rocket'];
+            careersData.forEach((c, i) => {
+                grid.innerHTML += `
+                    <div class="glass glass-hover p-6 rounded-xl text-center cursor-pointer flex flex-col justify-center items-center h-full min-h-[160px] group">
+                        <i class="fa-solid ${icons[i]} text-3xl mb-4 text-cyber group-hover:text-neon transition-colors duration-300 group-hover:scale-110"></i>
+                        <h4 class="text-white font-medium text-sm md:text-base leading-tight">${c}</h4>
+                    </div>
+                `;
+            });
+        }
+
+        // Modals
+        function openCourseModal(code, title, prereq) {
+            document.getElementById('cm-code').innerText = code || 'ELECTIVE';
+            document.getElementById('cm-title').innerText = title;
+            document.getElementById('cm-prereq').innerText = prereq && prereq !== '-' ? prereq : 'None';
+
+            // Smart descriptions based on keywords
+            let desc = "This course equips you with foundational knowledge crucial for understanding financial technologies.";
+            if (title.toLowerCase().includes('data') || title.toLowerCase().includes('stat')) desc = "Mastering data enables you to build predictive models and analyze complex financial systems quantitatively.";
+            if (title.toLowerCase().includes('ai') || title.toLowerCase().includes('machine')) desc = "AI is revolutionizing trading and risk management. This course puts you at the bleeding edge of automation.";
+            if (title.toLowerCase().includes('block')) desc = "Decentralized finance relies on robust blockchain architecture. Learn the mechanics behind crypto and smart contracts.";
+            if (title.toLowerCase().includes('manage') || title.toLowerCase().includes('econ')) desc = "A deep understanding of markets and economics is required to apply technological solutions effectively in the real world.";
+
+            document.getElementById('cm-desc').innerText = desc;
+
+            const modal = document.getElementById('courseModal');
+            const content = document.getElementById('courseModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeCourseModal() {
+            const content = document.getElementById('courseModalContent');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                document.getElementById('courseModal').classList.add('hidden');
+            }, 200);
+        }
+
+        // Quiz Logic
+        function showQuizResult(type) {
+            document.getElementById('quiz-container').classList.add('hidden');
+            const res = document.getElementById('quiz-result');
+            res.classList.remove('hidden');
+
+            if (type === 'data') {
+                document.getElementById('res-title').innerHTML = 'The Quant <i class="fa-solid fa-chart-line text-cyber ml-2"></i>';
+                document.getElementById('res-desc').innerText = 'You belong in the world of numbers and algorithms, turning massive datasets into actionable financial strategies.';
+                document.getElementById('res-elec').innerHTML = '<li>TECH406 Data Visualization</li><li>TECH407 Empirical Methods</li><li>STA204 Business Statistics</li>';
+                document.getElementById('res-career').innerHTML = '<li>Data Scientist in Finance</li><li>Algorithmic Trader</li>';
+            } else if (type === 'code') {
+                document.getElementById('res-title').innerHTML = 'The Architect <i class="fa-solid fa-laptop-code text-neon ml-2"></i>';
+                document.getElementById('res-desc').innerText = 'You are the builder of next-gen financial systems, from decentralized apps to high-frequency trading platforms.';
+                document.getElementById('res-elec').innerHTML = '<li>TECH202 Programming for Finance</li><li>TECH203 AI in Finance</li><li>TECH304 NLP for Finance</li>';
+                document.getElementById('res-career').innerHTML = '<li>Blockchain Developer</li><li>Financial Software Developer</li>';
+            } else {
+                document.getElementById('res-title').innerHTML = 'The Visionary <i class="fa-solid fa-chess-knight text-purple ml-2"></i>';
+                document.getElementById('res-desc').innerText = 'You see the big picture. You want to lead products, ensure compliance, and build innovative startups.';
+                document.getElementById('res-elec').innerHTML = '<li>FIN404 Entrepreneurial Finance</li><li>TECH204 FinTech Innovation</li><li>FIN305 Valuation</li>';
+                document.getElementById('res-career').innerHTML = '<li>Product Manager (FinTech)</li><li>Startup Roles</li><li>Consultant</li>';
+            }
+        }
+        function resetQuiz() {
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+        }
+
+        // Confetti
+        function triggerConfetti() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00E5FF', '#39FF14', '#B026FF'] });
+        }
+
+        // Initialization
+        window.onload = () => {
+            renderStructure(structureData['year1']);
+            renderCourses('prog'); // default to program electives
+            initCareers();
+
+            // Particles
+            tsParticles.load("tsparticles", {
+                fpsLimit: 60,
+                particles: {
+                    color: { value: ["#00E5FF", "#39FF14", "#B026FF"] },
+                    links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.1, width: 1 },
+                    move: { enable: true, speed: 1, direction: "none", random: false, straight: false, outModes: "out" },
+                    number: { density: { enable: true, area: 800 }, value: 40 },
+                    opacity: { value: 0.3 },
+                    shape: { type: "circle" },
+                    size: { value: { min: 1, max: 3 } },
+                }
+            });
+
+            // GSAP Scroll Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animate sections on scroll
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                if (section.id === 'home') return;
+
+                gsap.fromTo(section.children,
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        stagger: 0.15,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 80%",
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
+            });
+
+            // Counters
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                ScrollTrigger.create({
+                    trigger: counter,
+                    start: "top 80%",
+                    onEnter: () => {
+                        let target = +counter.getAttribute('data-target');
+                        gsap.to(counter, {
+                            innerHTML: target, duration: 2, snap: { innerHTML: 1 },
+                            ease: "power1.out"
+                        });
+                    },
+                    once: true
+                });
+            });
+
+            // Navbar background on scroll
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    nav.classList.add('shadow-lg', 'bg-navy/90');
+                    nav.classList.remove('glass');
+                } else {
+                    nav.classList.add('glass');
+                    nav.classList.remove('shadow-lg', 'bg-navy/90');
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>
